@@ -16,7 +16,7 @@ class Company(models.Model):
         return f"company {self.name}"
 
 class Branch(models.Model):
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='branch')
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='branches')
     name = models.CharField(max_length=100)
     address = models.TextField()
     phone = models.CharField(max_length=20)
@@ -30,13 +30,13 @@ class Branch(models.Model):
         return f"Branch {self.name} - company {self.company.name}"
 
 class Collaborator(models.Model):
-    branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name='collaborator')
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name='collaborators')
     name = models.CharField(max_length=100)
     cui = models.CharField(max_length=13)
 
     class Meta:
         ordering = ['id']
-        verbose_name = 'Collaborator',
+        verbose_name = 'Collaborator'
         verbose_name_plural = 'Collaborators'
 
     def __str__(self) -> str:
