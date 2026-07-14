@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 class Company(models.Model):
     name = models.CharField(max_length=100)
-    contry = models.CharField(max_length=255)
+    country = models.CharField(max_length=255)
 
 
     class Meta:
@@ -19,7 +19,7 @@ class Branch(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='branch')
     name = models.CharField(max_length=100)
     address = models.TextField()
-    phone = models.PositiveBigIntegerField()
+    phone = models.CharField(max_length=20)
 
     class Meta:
         ordering = ["id"]
@@ -32,7 +32,7 @@ class Branch(models.Model):
 class Collaborator(models.Model):
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name='collaborator')
     name = models.CharField(max_length=100)
-    cui = models.PositiveBigIntegerField()
+    cui = models.CharField(max_length=13)
 
     class Meta:
         ordering = ['id']
