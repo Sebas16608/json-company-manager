@@ -3,10 +3,12 @@ import Notification from './components/Notification'
 import CompaniesView from './components/CompaniesView'
 import BranchesView from './components/BranchesView'
 import CollaboratorsView from './components/CollaboratorsView'
+import ImportJSON from './components/ImportJSON'
 
 export default function App() {
   const [selectedCompany, setSelectedCompany] = useState(null)
   const [selectedBranch, setSelectedBranch] = useState(null)
+  const [refreshKey, setRefreshKey] = useState(0)
 
   const handleBackToCompanies = () => {
     setSelectedCompany(null)
@@ -15,6 +17,10 @@ export default function App() {
 
   const handleBackToBranches = () => {
     setSelectedBranch(null)
+  }
+
+  const handleImported = () => {
+    setRefreshKey((k) => k + 1)
   }
 
   return (
@@ -30,7 +36,14 @@ export default function App() {
 
       <div className="container">
         {!selectedCompany && (
-          <CompaniesView onSelectCompany={(c) => setSelectedCompany(c)} />
+          <>
+            <ImportJSON onImported={handleImported} />
+            <div className="mt-2" />
+            <CompaniesView
+              onSelectCompany={(c) => setSelectedCompany(c)}
+              refreshKey={refreshKey}
+            />
+          </>
         )}
 
         {selectedCompany && !selectedBranch && (

@@ -1,20 +1,62 @@
 {
   "empresa": {
-    "nombre": "Organizacion",
+    "nombre": "Innovatech Solutions S.A.",
     "pais": "Guatemala",
     "sucursales": [
       {
-        "nombre": "Sucursal 1",
-        "direccion": "Direccion 1",
-        "telefono": "11223341",
+        "nombre": "Sucursal Central",
+        "direccion": "Zona 10, Ciudad de Guatemala",
+        "telefono": "22334455",
         "colaboradores": [
           {
-            "nombre": "Juan Perez",
-            "CUI": "123456789123"
+            "nombre": "Carlos Mendoza",
+            "CUI": "1234567890123"
           },
           {
-            "nombre": "Alvaro Mendez",
-            "CUI": "12346789123"
+            "nombre": "Ana Lopez",
+            "CUI": "1234567890124"
+          },
+          {
+            "nombre": "Luis Ramirez",
+            "CUI": "1234567890125"
+          }
+        ]
+      },
+      {
+        "nombre": "Sucursal Norte",
+        "direccion": "Zona 18, Ciudad de Guatemala",
+        "telefono": "23445566",
+        "colaboradores": [
+          {
+            "nombre": "Maria Garcia",
+            "CUI": "1234567890126"
+          },
+          {
+            "nombre": "Pedro Castillo",
+            "CUI": "1234567890127"
+          }
+        ]
+      },
+      {
+        "nombre": "Sucursal Quetzaltenango",
+        "direccion": "Zona 3, Quetzaltenango",
+        "telefono": "77665544",
+        "colaboradores": [
+          {
+            "nombre": "Sofia Herrera",
+            "CUI": "1234567890128"
+          },
+          {
+            "nombre": "Daniel Perez",
+            "CUI": "1234567890129"
+          },
+          {
+            "nombre": "Andrea Morales",
+            "CUI": "1234567890130"
+          },
+          {
+            "nombre": "Jose Alvarez",
+            "CUI": "1234567890131"
           }
         ]
       }

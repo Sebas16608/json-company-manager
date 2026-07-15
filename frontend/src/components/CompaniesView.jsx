@@ -1,12 +1,23 @@
-import { useState, useEffect } from 'react'
-import { getCompanies } from '../api'
+import { useState, useEffect, useCallback } from 'react'
+import { getCompanies, updateCompany, deleteCompany } from '../api'
+import { notify } from './Notification'
+import Modal from './Modal'
+import EditForm from './EditForm'
 
-export default function CompaniesView({ onSelectCompany }) {
+const fields = [
+  { name: 'name', label: 'Nombre' },
+  { name: 'country', label: 'País' },
+]
+
+export default function CompaniesView({ onSelectCompany, refreshKey }) {
   const [companies, setCompanies] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [editing, setEditing] = useState(null)
 
-  useEffect(() => {
+  const fetchCompanies = useCallback(() => {
+    setLoading(true)
+    setError(null)
     getCompanies()
       .then((res) => {
         setCompanies(res.data)
@@ -17,6 +28,32 @@ export default function CompaniesView({ onSelectCompany }) {
         setLoading(false)
       })
   }, [])
+
+  useEffect(() => {
+    fetchCompanies()
+  }, [fetchCompanies, refreshKey])
+
+  const handleSave = (data) => {
+    updateCompany(editing.id, data)
+      .then(() => {
+        notify('Empresa actualizada')
+        setEditing(null)
+        setCompanies((prev) =>
+          prev.map((c) => (c.id === editing.id ? { ...c, ...data } : c))
+        )
+      })
+      .catch(() => notify('Error al actualizar empresa', 'error'))
+  }
+
+  const handleDelete = (company) => {
+    if (!confirm(`¿Eliminar la empresa "${company.name}"? Se eliminarán todas sus sucursales y colaboradores.`)) return
+    deleteCompany(company.id)
+      .then(() => {
+        notify('Empresa eliminada')
+        setCompanies((prev) => prev.filter((c) => c.id !== company.id))
+      })
+      .catch(() => notify('Error al eliminar empresa', 'error'))
+  }
 
   if (loading) {
     return (
@@ -42,15 +79,17 @@ export default function CompaniesView({ onSelectCompany }) {
             <table className="table">
               <thead>
                 <tr>
+                  <th>ID</th>
                   <th>Nombre</th>
                   <th>País</th>
                   <th>Sucursales</th>
-                  <th>Acción</th>
+                  <th>Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 {companies.map((c) => (
                   <tr key={c.id}>
+                    <td>{c.id}</td>
                     <td><strong>{c.name}</strong></td>
                     <td>{c.country}</td>
                     <td>
@@ -59,12 +98,26 @@ export default function CompaniesView({ onSelectCompany }) {
                       </span>
                     </td>
                     <td>
-                      <button
-                        className="btn btn-primary btn-small"
-                        onClick={() => onSelectCompany(c)}
-                      >
-                        Ver sucursales
-                      </button>
+                      <div className="action-group">
+                        <button
+                          className="btn btn-warning btn-small"
+                          onClick={() => setEditing(c)}
+                        >
+                          Editar
+                        </button>
+                        <button
+                          className="btn btn-danger btn-small"
+                          onClick={() => handleDelete(c)}
+                        >
+                          Eliminar
+                        </button>
+                        <button
+                          className="btn btn-primary btn-small"
+                          onClick={() => onSelectCompany(c)}
+                        >
+                          Ver sucursales
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -73,6 +126,17 @@ export default function CompaniesView({ onSelectCompany }) {
           </div>
         )}
       </div>
+
+      {editing && (
+        <Modal title="Editar empresa" onClose={() => setEditing(null)}>
+          <EditForm
+            fields={fields}
+            initial={{ name: editing.name, country: editing.country }}
+            onSubmit={handleSave}
+            onCancel={() => setEditing(null)}
+          />
+        </Modal>
+      )}
     </div>
   )
 }

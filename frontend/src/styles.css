@@ -380,6 +380,38 @@ body {
   overflow-x: auto;
 }
 
+/* Import JSON */
+.import-card {
+  margin-bottom: 0;
+}
+
+.import-body {
+  padding: 16px 20px;
+}
+
+.import-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.import-input {
+  font-size: 14px;
+}
+
+.import-filename {
+  font-size: 14px;
+  color: #555;
+  font-weight: 500;
+}
+
+.import-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
 /* small query */
 @media (max-width: 768px) {
   .container {
