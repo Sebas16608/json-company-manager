@@ -32,6 +32,10 @@ json-company-manager/
 ├── backend/          API Django REST Framework
 ├── frontend/         Aplicación React + Vite
 ├── database/         Scripts y backup de PostgreSQL
+│   ├── backup.sql
+│   ├── create_database.sh
+│   ├── create_database_macos.sh
+│   └── create_database_windows.ps1
 ├── scripts/          Scripts de ejecución
 ├── .env.example      Ejemplo de variables de entorno
 └── README.md
@@ -45,13 +49,29 @@ json-company-manager/
 
 ### Crear base de datos
 
-Ejecutar el script que crea la base de datos y restaura el backup:
+Ejecutar el script correspondiente a su sistema operativo:
+
+#### Linux
 
 ```bash
+chmod +x database/create_database.sh
 ./database/create_database.sh
 ```
 
-El script permite configurar las variables de entorno:
+#### macOS
+
+```bash
+chmod +x database/create_database_macos.sh
+./database/create_database_macos.sh
+```
+
+#### Windows
+
+```powershell
+.\database\create_database_windows.ps1
+```
+
+Los scripts permiten configurar las variables de entorno:
 
 ```bash
 DB_NAME=das_global DB_USER=postgres ./database/create_database.sh
