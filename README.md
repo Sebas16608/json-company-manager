@@ -29,30 +29,57 @@ Aplicación web que modela una jerarquía de **Empresa > Sucursal > Colaborador*
 
 ```
 json-company-manager/
-├── backend/
-│   ├── manage.py
-│   ├── requirements.txt
-│   ├── core/
-│   │   ├── settings.py
-│   │   ├── urls.py
-│   │   └── wsgi.py
-│   └── company/
-│       ├── models.py
-│       ├── serializers.py
-│       ├── views.py
-│       └── admin.py
-├── frontend/
-│   ├── src/
-│   ├── package.json
-│   └── vite.config.js
-├── scripts/
-│   ├── start-linux.sh
-│   ├── start-macos.sh
-│   ├── start-windows.ps1
-│   └── README.md
-├── empresa.json
+├── backend/          API Django REST Framework
+├── frontend/         Aplicación React + Vite
+├── database/         Scripts y backup de PostgreSQL
+├── scripts/          Scripts de ejecución
+├── .env.example      Ejemplo de variables de entorno
 └── README.md
 ```
+
+## Base de datos
+
+### Requisitos
+
+- PostgreSQL instalado y ejecutándose
+
+### Crear base de datos
+
+Ejecutar el script que crea la base de datos y restaura el backup:
+
+```bash
+./database/create_database.sh
+```
+
+El script permite configurar las variables de entorno:
+
+```bash
+DB_NAME=das_global DB_USER=postgres ./database/create_database.sh
+```
+
+### Restaurar manualmente
+
+Si ya tiene la base de datos creada, puede restaurar el backup directamente:
+
+```bash
+psql -U postgres -d das_global < database/backup.sql
+```
+
+### Variables de entorno
+
+El backend utiliza las siguientes variables de entorno definidas en `backend/.env`:
+
+| Variable | Descripción | Ejemplo |
+|---|---|---|
+| `DB_NAME` | Nombre de la base de datos | `das_global` |
+| `DB_USER` | Usuario de PostgreSQL | `postgres` |
+| `DB_PASSWORD` | Contraseña del usuario | `tu_password` |
+| `DB_HOST` | Host del servidor | `localhost` |
+| `DB_PORT` | Puerto de conexión | `5432` |
+| `SECRET_KEY` | Clave secreta de Django | `tu_clave_secreta` |
+| `DEBUG` | Modo depuración | `True` |
+
+Ver [.env.example](.env.example) para el archivo de ejemplo.
 
 ## Backend
 
@@ -80,18 +107,13 @@ pip install -r requirements.txt
 
 ### Variables de entorno
 
-El archivo `backend/.env` debe contener:
+Copiar el archivo de ejemplo y configurar las credenciales:
 
-```env
-SECRET_KEY=tu-clave-secreta
-DEBUG=True
-ALLOWED_HOSTS=*
-DB_NAME=das_global
-DB_USER=postgres
-DB_PASSWORD=tu-password
-DB_HOST=localhost
-DB_PORT=5432
+```bash
+cp .env.example backend/.env
 ```
+
+Editar `backend/.env` con los valores correctos de su base de datos.
 
 ### Ejecutar migraciones
 
@@ -120,14 +142,6 @@ npm run dev
 ```
 
 El frontend estará disponible en `http://localhost:5173`.
-
-## Base de datos
-
-### Restaurar backup
-
-```bash
-psql -U postgres -d das_global < database/backup.sql
-```
 
 ## Importación JSON
 
